@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviora | Smart Waste Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- Colors --- */
+        :root {
+            --deep-forest: #1E3F2F;
+            --sage-green: #A7B99A;
+            --charcoal: #2C3E50;
+            --off-white: #F9F9F9;
+            --white: #FEFEFE;
+            --light-green: #e8f5e9;
+            --step-circle-1: #1E3F2F; /* Dark green */
+            --step-circle-2: #3A7D5E; /* Medium green */
+            --step-circle-3: #5BA47E; /* Light green */
+            --step-arrow: #A7B99A;
+            --step-bg: transparent;
+        }
+
+        /* --- Global Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--white);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        section {
+            padding: 100px 0;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        h1, h2, h3 {
+            color: var(--deep-forest);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        /* UPDATED: Section heading - removed background animation for steps section only */
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            position: relative;
+            margin: 0 auto 80px auto;
+            width: auto;
+            padding: 0;
+            display: block;
+            left: 0;
+            transform: none;
+            overflow: visible;
+        }
+
+        .section-title span {
+            position: relative;
+            z-index: 2;
+            color: var(--deep-forest);
+            padding: 0;
+            background: none;
+        }
+
+        /* Remove the background animation for section titles */
+        .section-title::before {
+            display: none;
+        }
+
+        .section-title.animated span {
+            color: var(--deep-forest);
+        }
+
+        /* Steps section specific title styling */
+        .steps-section .section-title {
+            text-align: left;
+            margin-bottom: 60px;
+            padding-left: 0;
+        }
+
+        .steps-section .section-title span {
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .steps-section .section-title span::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background-color: var(--sage-green);
+        }
+
+        /* --- UPDATED: Background Animation with Alpha 0.11 --- */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            background: linear-gradient(135deg, #f8fbf9 0%, #f0f7f2 100%);
+        }
+        
+        /* Horizontal lines moving vertically - Updated opacity and alpha */
+        .horizontal-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+            animation: moveVertical 25s infinite linear;
+            opacity: 0.8; /* UPDATED: Increased opacity */
+            will-change: transform;
+        }
+
+        .horizontal-line:nth-child(1) { 
+            top: 10%; 
+            animation-duration: 20s; 
+            animation-delay: 0s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(2) { 
+            top: 25%; 
+            animation-duration: 22s; 
+            animation-delay: 2s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(3) { 
+            top: 40%; 
+            animation-duration: 24s; 
+            animation-delay: 4s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(4) { 
+            top: 55%; 
+            animation-duration: 19s; 
+            animation-delay: 1s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(5) { 
+            top: 70%; 
+            animation-duration: 21s; 
+            animation-delay: 3s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(6) { 
+            top: 85%; 
+            animation-duration: 23s; 
+            animation-delay: 5s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        
+        /* Vertical lines moving horizontally - Updated opacity and alpha */
+        .vertical-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+            animation: moveHorizontal 20s infinite linear;
+            opacity: 0.8; /* UPDATED: Increased opacity */
+            will-change: transform;
+        }
+
+        .vertical-line:nth-child(7) { 
+            left: 10%; 
+            animation-duration: 18s; 
+            animation-delay: 0s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(8) { 
+            left: 25%; 
+            animation-duration: 22s; 
+            animation-delay: 1s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(9) { 
+            left: 40%; 
+            animation-duration: 20s; 
+            animation-delay: 2s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(10) { 
+            left: 60%; 
+            animation-duration: 24s; 
+            animation-delay: 3s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(11) { 
+            left: 75%; 
+            animation-duration: 19s; 
+            animation-delay: 4s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(12) { 
+            left: 90%; 
+            animation-duration: 21s; 
+            animation-delay: 5s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+
+        /* Additional continuous lines for more movement */
+        .horizontal-line:nth-child(13) { 
+            top: 15%; 
+            animation-duration: 26s; 
+            animation-delay: 6s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(14) { 
+            top: 30%; 
+            animation-duration: 23s; 
+            animation-delay: 7s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .horizontal-line:nth-child(15) { 
+            top: 65%; 
+            animation-duration: 27s; 
+            animation-delay: 8s;
+            background: linear-gradient(90deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        
+        .vertical-line:nth-child(16) { 
+            left: 15%; 
+            animation-duration: 25s; 
+            animation-delay: 6s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(17) { 
+            left: 35%; 
+            animation-duration: 21s; 
+            animation-delay: 7s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+        .vertical-line:nth-child(18) { 
+            left: 65%; 
+            animation-duration: 23s; 
+            animation-delay: 8s;
+            background: linear-gradient(0deg, transparent, rgba(30, 63, 47, 0.11), transparent);
+        }
+
+        @keyframes moveVertical {
+            0% { 
+                transform: translateY(-100%);
+            }
+            100% { 
+                transform: translateY(100vh);
+            }
+        }
+        
+        @keyframes moveHorizontal {
+            0% { 
+                transform: translateX(-100%);
+            }
+            100% { 
+                transform: translateX(100vw);
+            }
+        }
+
+        /* --- Enhanced Navbar with Logo Image --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            background-color: transparent;
+            color: var(--deep-forest);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 12px 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--deep-forest);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav-links {
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            padding: 10px 18px;
+            position: relative;
+            transition: color 0.3s ease;
+            color: var(--deep-forest);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--sage-green);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--sage-green);
+        }
+
+        /* --- CTA Button --- */
+        .cta-button {
+            background-color: var(--sage-green);
+            color: var(--deep-forest);
+            padding: 14px 30px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--deep-forest);
+            color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- FIXED: Product/Hero Section with proper structure --- */
+        .hero-section {
+            background-color: transparent;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 170px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 60px;
+            width: 100%;
+        }
+        
+        .hero-content {
+            flex: 1;
+            max-width: 50%;
+            padding-right: 40px;
+        }
+
+        .typing-container {
+            min-height: 140px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            overflow: visible; /* Changed from hidden to visible */
+            position: relative;
+        }
+
+        /* FIXED: Typing text with proper visibility */
+        .typing-text {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--deep-forest);
+            overflow: visible; /* Changed from hidden to visible */
+            white-space: normal; /* Changed from nowrap to normal */
+            line-height: 1.2;
+            width: 100%; /* Changed from 0 to 100% */
+            animation: typing 2s steps(40, end) forwards;
+            margin-bottom: 30px;
+            border-right: 3px solid var(--sage-green);
+            animation-delay: 0.3s;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        @keyframes typing {
+            from { 
+                width: 0;
+                opacity: 0;
+            }
+            to { 
+                width: 100%;
+                opacity: 1;
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--charcoal);
+            margin-bottom: 40px;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        .hero-content .cta-button {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+            animation-delay: 3s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* UPDATED: Hero image positioned at extreme right */
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end; /* Changed from center to flex-end */
+            align-items: center;
+            position: relative;
+            height: 100%;
+        }
+
+        /* UPDATED: Product image container - decreased height and positioned right */
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 450px; /* DECREASED FROM 600px TO 450px */
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: transform 1s ease, opacity 1s ease;
+            margin-left: auto; /* Pushes to the right */
+        }
+        
+        .product-image-container.animated {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* FIXED: Product image - proper styling */
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            border-radius: 20px;
+        }
+
+        .product-image-container.animated .product-image {
+            opacity: 1;
+            transition-delay: 0.5s;
+        }
+
+        .product-image-container:hover .product-image {
+            transform: translateY(-10px) scale(1.02);
+            transition: transform 0.5s ease;
+        }
+
+        /* --- UPDATED: Features Section with NEW Long Rectangular Design --- */
+        .features-section {
+            background-color: transparent;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        /* NEW: Long Rectangular Feature Cards */
+        .feature-rectangle-card {
+            width: 100%;
+            padding: 30px 40px;
+            margin-bottom: 15px;
+            background-color: var(--deep-forest);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-height: 120px;
+            color: var(--white);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-rectangle-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Animation fill effect */
+        .feature-rectangle-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--white);
+            z-index: 1;
+            transition: width 1.5s ease; /* SLOW animation */
+        }
+
+        .feature-rectangle-card.active::before {
+            width: 100%;
+        }
+
+        .feature-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .feature-rectangle-card h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 1.5rem;
+            transition: color 0.5s ease;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .feature-rectangle-card p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            transition: color 0.5s ease;
+            max-width: 95%;
+            line-height: 1.6;
+        }
+
+        /* When animation completes, text becomes dark */
+        .feature-rectangle-card.active .feature-content h3 {
+            color: var(--deep-forest);
+            transition-delay: 1.2s;
+        }
+
+        .feature-rectangle-card.active .feature-content p {
+            color: var(--charcoal);
+            transition-delay: 1.3s;
+        }
+
+        /* UPDATED: Features Display Section with Correct Animation */
+        .features-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            min-height: 500px;
+            margin-bottom: 60px;
+        }
+
+        .ui-images-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Main UI Image - Center, Large */
+        .ui-image-main {
+            width: 300px;
+            height: 600px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            object-fit: cover;
+            z-index: 10;
+            position: absolute;
+            opacity: 1;
+            transform: scale(1);
+            transition: all 1.2s ease; /* SLOWER animation */
+        }
+
+        /* Side UI Images - Initially hidden, slide in from sides */
+        .ui-image-side {
+            position: absolute;
+            width: 250px;
+            height: 500px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            z-index: 5;
+            opacity: 0;
+            transition: all 1.5s ease; /* SLOW animation */
+        }
+
+        .ui-image-left {
+            left: 10%;
+            transform: translateX(-100px) rotate(-5deg);
+        }
+
+        .ui-image-right {
+            right: 10%;
+            transform: translateX(100px) rotate(5deg);
+        }
+
+        /* When section is animated */
+        .ui-image-side.visible {
+            opacity: 0.9;
+            transform: translateX(0) rotate(0deg);
+        }
+
+        /* --- UPDATED: Steps to Use Section --- */
+        .steps-section {
+            background-color: var(--step-bg);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .steps-section .section-title {
+            text-align: left;
+            margin-bottom: 80px;
+            padding-left: 0;
+            font-size: 2.5rem;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 0;
+        }
+
+        .step-circle {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: scale(0.5) translateY(50px);
+            transition: all 0.8s ease;
+            padding: 30px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* FIXED: Different green colors for each circle - USING ID SELECTORS */
+        #step1 {
+            background: linear-gradient(135deg, #1E3F2F, #2a5c42) !important; /* Dark green */
+        }
+        
+        #step2 {
+            background: linear-gradient(135deg, #3A7D5E, #4a8d6d) !important; /* Medium green */
+        }
+        
+        #step3 {
+            background: linear-gradient(135deg, #5BA47E, #6cad8d) !important; /* Light green */
+        }
+
+        .step-circle.animated {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .step-circle:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-circle-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--white);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1;
+        }
+
+        .step-circle h4 {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.3;
+        }
+
+        .step-circle p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.4;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+
+        .step-circle:nth-child(1) { animation-delay: 0.2s; }
+        .step-circle:nth-child(2) { animation-delay: 0.4s; }
+        .step-circle:nth-child(3) { animation-delay: 0.6s; }
+
+        .step-arrow {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-forest);
+            font-size: 2.5rem;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.8s ease;
+        }
+
+        .step-arrow.animated {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .step-arrow:nth-child(2) { transition-delay: 0.3s; }
+        .step-arrow:nth-child(4) { transition-delay: 0.5s; }
+
+        /* --- UPDATED: Download Section - Clean Design --- */
+        .download-section-new {
+            background: linear-gradient(135deg, #f8fbf9 0%, #f0f7f2 100%);
+            padding: 100px 0;
+            text-align: center;
+            color: var(--deep-forest);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-section-new .section-title {
+            color: var(--deep-forest);
+            margin-bottom: 20px;
+        }
+
+        .download-section-new .subtitle {
+            font-size: 1.3rem;
+            color: var(--charcoal);
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .download-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .download-buttons-new {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .download-btn {
+            background-color: var(--deep-forest);
+            color: var(--white);
+            padding: 18px 40px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(30, 63, 47, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            width: 250px;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            background-color: var(--sage-green);
+            color: var(--deep-forest);
+            box-shadow: 0 8px 20px rgba(30, 63, 47, 0.3);
+        }
+
+        .download-btn i {
+            font-size: 1.8rem;
+        }
+
+        .download-btn.apple {
+            background-color: var(--deep-forest);
+        }
+
+        .download-btn.google {
+            background-color: var(--deep-forest);
+        }
+
+        /* --- UPDATED: Contact Section - Clean Design --- */
+        .contact-section {
+            background-color: transparent;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            background: linear-gradient(135deg, var(--off-white), #f0f5f0);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .contact-container.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .contact-info h2, .contact-form-container h2 {
+            color: var(--deep-forest);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-family: 'Montserrat', sans-serif;
+            border-bottom: 2px solid var(--sage-green);
+            padding-bottom: 10px;
+        }
+
+        .info-item {
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        
+        .info-item.animated {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .info-item:nth-child(1) { transition-delay: 0.1s; }
+        .info-item:nth-child(2) { transition-delay: 0.2s; }
+        .info-item:nth-child(3) { transition-delay: 0.3s; }
+
+        .info-item p {
+            margin: 0;
+            margin-left: 10px;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        .info-item strong {
+            display: block;
+            color: var(--deep-forest);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .info-item::before {
+            content: '📍';
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 1.5rem;
+            color: var(--sage-green);
+            margin-top: 5px;
+        }
+        .info-item:nth-child(2)::before { content: '📞'; }
+        .info-item:nth-child(3)::before { content: '📧'; }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-forest);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .social-icon.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .social-icon:nth-child(1) { transition-delay: 0.1s; }
+        .social-icon:nth-child(2) { transition-delay: 0.2s; }
+        .social-icon:nth-child(3) { transition-delay: 0.3s; }
+        .social-icon:nth-child(4) { transition-delay: 0.4s; }
+
+        .social-icon:hover {
+            background: var(--deep-forest);
+            color: white;
+            transform: translateY(-3px) scale(1.1);
+        }
+
+        .contact-form-container h2 {
+            margin-bottom: 30px;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 1rem;
+            transition: border 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+            background-color: white;
+        }
+        
+        .contact-form input.animated, .contact-form textarea.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .contact-form input:nth-child(1) { transition-delay: 0.1s; }
+        .contact-form input:nth-child(2) { transition-delay: 0.2s; }
+        .contact-form input:nth-child(3) { transition-delay: 0.3s; }
+        .contact-form textarea { transition-delay: 0.4s; }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-color: var(--sage-green);
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(167, 185, 154, 0.2);
+        }
+
+        .contact-form textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--charcoal);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+
+        .contact-form .cta-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 15px;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition-delay: 0.5s;
+            background-color: var(--sage-green);
+            color: var(--deep-forest);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .contact-form .cta-button.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .contact-form .cta-button:hover {
+            background-color: var(--deep-forest);
+            color: var(--white);
+        }
+
+        /* --- UPDATED: Team Section - 2 Rows with 3 Members Each --- */
+        .team-section {
+            background-color: transparent;
+            position: relative;
+            padding: 100px 0;
+        }
+
+        .team-section .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            padding-top: 20px;
+        }
+
+        .team-member {
+            background-color: var(--off-white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+        
+        .team-member.animated {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .team-member img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            filter: grayscale(20%);
+            transition: filter 0.4s ease, transform 0.4s ease;
+        }
+
+        .team-member:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.1);
+        }
+
+        .member-info {
+            padding: 25px 20px;
+            position: relative;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .member-info h3 {
+            color: var(--deep-forest);
+            margin-bottom: 8px;
+            font-size: 1.4rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .member-role {
+            font-size: 1rem;
+            color: var(--sage-green);
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .member-description {
+            font-size: 0.95rem;
+            color: var(--charcoal);
+            margin-bottom: 15px;
+            line-height: 1.5;
+            text-align: left;
+        }
+        
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .member-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--sage-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-forest);
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .member-social a:hover {
+            background: var(--deep-forest);
+            color: white;
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--deep-forest);
+            color: var(--off-white);
+            text-align: center;
+            padding: 30px 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 1024px) {
+            .typing-text {
+                font-size: 3rem;
+            }
+            
+            .product-image-container {
+                width: 100%;
+                max-width: 450px;
+                height: 400px;
+            }
+            
+            .features-display {
+                min-height: 450px;
+            }
+            
+            .ui-image-main {
+                width: 250px;
+                height: 500px;
+            }
+            
+            .ui-image-side {
+                width: 200px;
+                height: 400px;
+            }
+            
+            .step-circle {
+                width: 240px;
+                height: 240px;
+                padding: 25px;
+            }
+            
+            .step-arrow {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+            
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: auto;
+                padding: 120px 0 80px;
+            }
+            
+            .hero-wrapper {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+            }
+
+            .hero-content, .hero-image {
+                max-width: 100%;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+            }
+            
+            .hero-image {
+                justify-content: center;
+            }
+            
+            .typing-text {
+                font-size: 2.5rem;
+                line-height: 1.2;
+                white-space: normal;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .product-image-container {
+                position: relative;
+                width: 100%;
+                max-width: 400px;
+                height: 350px;
+                margin: 0 auto;
+            }
+            
+            .features-section {
+                padding: 60px 0;
+            }
+            
+            .features-display {
+                min-height: 400px;
+            }
+            
+            .ui-images-container {
+                height: 400px;
+            }
+            
+            .ui-image-main {
+                width: 200px;
+                height: 400px;
+            }
+            
+            .ui-image-side {
+                width: 160px;
+                height: 320px;
+                display: none; /* Hide side images on mobile */
+            }
+            
+            .feature-rectangle-card {
+                padding: 25px 20px;
+                min-height: 110px;
+            }
+            
+            .feature-rectangle-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .feature-rectangle-card p {
+                font-size: 1rem;
+            }
+            
+            .steps-section {
+                padding: 80px 0;
+            }
+            
+            .steps-section .section-title {
+                margin-bottom: 60px;
+                text-align: center;
+            }
+            
+            .steps-section .section-title span::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .steps-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .step-arrow {
+                transform: rotate(90deg);
+                height: 40px;
+                margin: 10px 0;
+            }
+            
+            .step-circle {
+                width: 260px;
+                height: 260px;
+            }
+
+            .download-content {
+                flex-direction: column;
+            }
+            
+            .download-buttons-new {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .download-btn {
+                width: 280px;
+            }
+
+            .contact-container {
+                flex-direction: column;
+                padding: 30px;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                padding: 15px 5%;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links li {
+                margin: 8px 0;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            
+            .team-member {
+                max-width: 100%;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .typing-text {
+                font-size: 2rem;
+            }
+            
+            .product-image-container {
+                max-width: 320px;
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .ui-image-main {
+                width: 180px;
+                height: 360px;
+            }
+            
+            .feature-rectangle-card {
+                padding: 20px 15px;
+                min-height: 100px;
+            }
+            
+            .feature-rectangle-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .feature-rectangle-card p {
+                font-size: 0.95rem;
+            }
+            
+            .step-circle {
+                width: 220px;
+                height: 220px;
+                padding: 20px;
+            }
+            
+            .step-icon {
+                font-size: 2.5rem;
+                height: 50px;
+            }
+            
+            .step-number {
+                font-size: 2rem;
+            }
+            
+            .step-circle h4 {
+                font-size: 1.2rem;
+            }
+            
+            .step-circle p {
+                font-size: 0.9rem;
+            }
+            
+            .download-btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 15px 30px;
+            }
+            
+            .contact-container {
+                padding: 20px;
+            }
+            
+            .team-grid {
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- UPDATED: Continuous Background Animation -->
+    <div class="background-animation">
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <!-- Additional lines for continuous movement -->
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+        <div class="vertical-line"></div>
+    </div>
+
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="logo-container">
+                <!-- Logo image placeholder - Replace src with your logo image -->
+                <div class="logo-img">
+                    <img src="images/logo.png" alt="Enviora Logo">
+                </div>
+                <div class="logo">Enviora</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#product">Product</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#steps">How to Use</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#team">Team</a></li> <!-- Team link added to nav -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Product Section - FIXED STRUCTURE -->
+        <section id="product" class="hero-section">
+            <div class="container">
+                <div class="hero-wrapper">
+                    <div class="hero-content">
+                        <div class="typing-container">
+                            <h1 class="typing-text">Your Route To A Cleaner City</h1>
+                        </div>
+                        <p>Our mobile app provides real-time tracking, personalized schedules, and instant reporting to create cleaner, smarter communities. Join the movement for a sustainable future.</p>
+                        <a href="#download" class="cta-button">Download Now</a>
+                    </div>
+                    <div class="hero-image">
+                        <div class="product-image-container" id="productImageContainer">
+                            <img src="images/hero image.jpg" 
+                                 alt="Clean City Environment" class="product-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title" id="featuresTitle"><span>Our Features for a Cleaner Planet</span></h2>
+                <div class="features-container">
+                    <div class="features-display">
+                        <div class="ui-images-container">
+                            <img src="images/ui.png" alt="Enviora UI Design" class="ui-image-main" id="uiImageMain">
+                            <img src="images/ui2.png" alt="Enviora UI Design" class="ui-image-side ui-image-left" id="uiImageLeft">
+                            <img src="images/ui1 (1).png" alt="Enviora UI Design" class="ui-image-side ui-image-right" id="uiImageRight">
+                        </div>
+                    </div>
+                    
+                    <!-- Feature Cards -->
+                    <div class="feature-rectangle-card" data-feature="1" id="featureCard1">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Location-Based Collection Schedules</h3>
+                                <p>View waste collection schedules tailored specifically to your location. Know exactly when to put out your bins with personalised timetables for your area.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="2" id="featureCard2">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Automated Push Notifications</h3>
+                                <p>Receive timely reminders about upcoming waste collection dates. Stay informed about any schedule changes or if collection trucks fail to arrive in your area.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="3" id="featureCard3">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Real-Time Vehicle Tracking</h3>
+                                <p>Track waste collection vehicles live on an interactive map. See the exact location of collection trucks and know precisely when they'll reach your street for complete transparency.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="4" id="featureCard4">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Integrated Reporting System</h3>
+                                <p>Report uncollected waste and illegal dumping directly to waste management supervisors through the app. Help maintain cleanliness in your community with just a few taps.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="5" id="featureCard5">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Special Pickup Requests</h3>
+                                <p>Request special collections for bulky items that cannot be accommodated during regular pickups. Dispose of large items conveniently through the platform.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="6" id="featureCard6">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Recycling Centre Directory</h3>
+                                <p>Access a comprehensive map showing nearby recycling centres and specialised collection points for electronic waste and other special items in your area.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="7" id="featureCard7">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Interactive Segregation Guide</h3>
+                                <p>Learn proper waste separation with our visual educational guide featuring pictures and videos. Understand exactly which waste goes into which bin for effective segregation at source.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-rectangle-card" data-feature="8" id="featureCard8">
+                        <div class="feature-content">
+                            <div class="feature-text">
+                                <h3>Community Engagement</h3>
+                                <p>Join a unified digital platform that connects citizens with waste collection services, promoting environmental responsibility and cleaner neighbourhoods.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPDATED: Steps to Use Section -->
+        <section id="steps" class="steps-section">
+            <div class="container">
+                <h2 class="section-title" id="stepsTitle"><span>Simple Steps to Use Enviora</span></h2>
+                <div class="steps-container">
+                    <div class="step-circle" id="step1">
+                        <div class="step-circle-inner">
+                            <div class="step-icon"><i class="fas fa-download"></i></div>
+                            <div class="step-number">1</div>
+                            <h4>Download the App</h4>
+                            <p>Get Enviora from your app store and install it on your device</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow" id="arrow1">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step-circle" id="step2">
+                        <div class="step-circle-inner">
+                            <div class="step-icon"><i class="fas fa-user-plus"></i></div>
+                            <div class="step-number">2</div>
+                            <h4>Login & Register</h4>
+                            <p>CSetup your profile and location.</p>
+                        </div>
+                    </div>
+                    <div class="step-arrow" id="arrow2">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step-circle" id="step3">
+                        <div class="step-circle-inner">
+                            <div class="step-icon"><i class="fas fa-bell"></i></div>
+                            <div class="step-number">3</div>
+                            <h4>Get Notifications</h4>
+                            <p>Receive collection schedules and access all 8+ features instantly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- UPDATED: Download Section New -->
+        <section id="download" class="download-section-new">
+            <div class="container">
+                <h2 class="section-title" id="downloadTitle"><span>Download Enviora Today</span></h2>
+                <p class="subtitle">Join thousands of users who are already making their cities cleaner and more sustainable with our app.</p>
+                <div class="download-content">
+                    <div class="download-buttons-new">
+                        <button class="download-btn apple">
+                            <i class="fab fa-apple"></i>
+                            <span>Download on the App Store</span>
+                        </button>
+                        <button class="download-btn google">
+                            <i class="fab fa-google-play"></i>
+                            <span>Get it on Google Play</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPDATED: Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title" id="contactTitle"><span>Get In Touch</span></h2>
+                <div class="contact-container" id="contactContainer">
+                    <div class="contact-info">
+                        <h2>Contact Information</h2>
+                        <div class="info-item">
+                            <div>
+                                <strong>Our Office</strong>
+                                <p>435 Galle Rd, Colombo 00300</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div>
+                                <strong>Phone</strong>
+                                <p>076-2997280</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div>
+                                <strong>Email</strong>
+                                <p>info@enviora.com</p>
+                            </div>
+                        </div>
+                        
+                        <h2 style="margin-top: 40px;">Follow Us</h2>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form-container">
+                        <h2>Send Us a Message</h2>
+                        <form class="contact-form">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name">
+                            
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter your email">
+                            
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="Enter subject">
+                            
+                            <label for="message">Your Message</label>
+                            <textarea id="message" name="message" placeholder="Enter your message"></textarea>
+                            
+                            <button type="submit" class="cta-button">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UPDATED: Team Section - 2 Rows with 3 Members Each -->
+        <section id="team" class="team-section">
+            <div class="container">
+                <h2 class="section-title" id="teamTitle"><span>Meet Our Team</span></h2>
+                <div class="team-grid">
+                    <!-- Row 1 -->
+                    <div class="team-member">
+                        <img src="images/yomali.jpg" alt="Yomali Madannayake">
+                        <div class="member-info">
+                            <h3>Yomali Madannayake</h3>
+                            <p class="member-role">Team Leader</p>
+                            <p class="member-description">Oversees project development and coordinates team efforts to ensure successful delivery of the Enviora platform.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="images/kisanda.jpg" alt="Kisanda Ranudaya">
+                        <div class="member-info">
+                            <h3>Kisanda Ranudaya</h3>
+                            <p class="member-role">UI/UX Designer</p>
+                            <p class="member-description">Designs intuitive user interfaces and creates seamless user experiences for the Enviora application.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="images/senath2.jpg" alt="Senath Thejana">
+                        <div class="member-info">
+                            <h3>Senath Thejana</h3>
+                            <p class="member-role">Front-end Developer</p>
+                            <p class="member-description">Implements responsive web interfaces and ensures optimal performance across all devices and platforms.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Row 2 -->
+                    <div class="team-member">
+                        <img src="images/female.jpg" alt="Vinuji Thasara">
+                        <div class="member-info">
+                            <h3>Vinuji Thasara</h3>
+                            <p class="member-role">Database Specialist</p>
+                            <p class="member-description">Designs and maintains the database architecture, ensuring data integrity and optimal performance for the platform.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="images/tharusha.jpg" alt="Tharusha Savindi">
+                        <div class="member-info">
+                            <h3>Tharusha Savindi</h3>
+                            <p class="member-role">Back-end Developer</p>
+                            <p class="member-description">Develops server-side logic and ensures high performance and responsiveness to requests from the front-end.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <img src="images/ishan.jpg" alt="Ishan Sandeepa">
+                        <div class="member-info">
+                            <h3>Ishan Sandeepa</h3>
+                            <p class="member-role">Front-end Developer</p>
+                            <p class="member-description">Works on client-side development, implementing features and ensuring cross-browser compatibility.</p>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#"><i class="fab fa-github"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+             <p>&copy; 2025 Enviora_App // CS-105-IIT</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Navbar Scroll Effect ---
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- Animation Management System ---
+        class AnimationManager {
+            constructor() {
+                this.animatedSections = new Set();
+                this.setupObservers();
+                this.setupScrollEvents();
+            }
+            
+            setupObservers() {
+                // Create Intersection Observer for sections
+                this.observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const sectionId = entry.target.id;
+                            this.animateSection(sectionId);
+                        } else {
+                            const sectionId = entry.target.id;
+                            this.resetSectionAnimation(sectionId);
+                        }
+                    });
+                }, {
+                    threshold: 0.3,
+                    rootMargin: '0px 0px -100px 0px'
+                });
+                
+                // Observe all sections
+                document.querySelectorAll('section').forEach(section => {
+                    this.observer.observe(section);
+                });
+            }
+            
+            setupScrollEvents() {
+                // Additional scroll-based triggers for more precise control
+                window.addEventListener('scroll', () => {
+                    this.checkAllSections();
+                });
+            }
+            
+            checkAllSections() {
+                document.querySelectorAll('section').forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    const isInView = (
+                        rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 &&
+                        rect.bottom >= 0
+                    );
+                    
+                    if (isInView && !this.animatedSections.has(section.id)) {
+                        this.animateSection(section.id);
+                    } else if (!isInView && this.animatedSections.has(section.id)) {
+                        this.resetSectionAnimation(section.id);
+                    }
+                });
+            }
+            
+            animateSection(sectionId) {
+                if (this.animatedSections.has(sectionId)) return;
+                
+                this.animatedSections.add(sectionId);
+                
+                switch(sectionId) {
+                    case 'product':
+                        this.animateProductSection();
+                        break;
+                    case 'features':
+                        this.animateFeaturesSection();
+                        break;
+                    case 'steps':
+                        this.animateStepsSection();
+                        break;
+                    case 'team':
+                        this.animateTeamSection();
+                        break;
+                    case 'download':
+                        this.animateDownloadSection();
+                        break;
+                    case 'contact':
+                        this.animateContactSection();
+                        break;
+                }
+            }
+            
+            resetSectionAnimation(sectionId) {
+                if (!this.animatedSections.has(sectionId)) return;
+                
+                this.animatedSections.delete(sectionId);
+                
+                switch(sectionId) {
+                    case 'product':
+                        this.resetProductSection();
+                        break;
+                    case 'features':
+                        this.resetFeaturesSection();
+                        break;
+                    case 'steps':
+                        this.resetStepsSection();
+                        break;
+                    case 'team':
+                        this.resetTeamSection();
+                        break;
+                    case 'download':
+                        this.resetDownloadSection();
+                        break;
+                    case 'contact':
+                        this.resetContactSection();
+                        break;
+                }
+            }
+            
+            // Section Title Animation Helper
+            animateSectionTitle(sectionId) {
+                const titleId = sectionId + 'Title';
+                const title = document.getElementById(titleId);
+                if (title) {
+                    title.classList.remove('animated');
+                    void title.offsetWidth;
+                    setTimeout(() => {
+                        title.classList.add('animated');
+                    }, 300);
+                }
+            }
+            
+            // Product Section Animation
+            animateProductSection() {
+                const productImageContainer = document.getElementById('productImageContainer');
+                
+                productImageContainer.classList.remove('animated');
+                void productImageContainer.offsetWidth;
+                setTimeout(() => {
+                    productImageContainer.classList.add('animated');
+                }, 100);
+            }
+            
+            resetProductSection() {
+                const productImageContainer = document.getElementById('productImageContainer');
+                productImageContainer.classList.remove('animated');
+            }
+            
+            // Features Section Animations with NEW UI image animation
+            animateFeaturesSection() {
+                this.animateSectionTitle('features');
+                
+                const uiImageMain = document.getElementById('uiImageMain');
+                const uiImageLeft = document.getElementById('uiImageLeft');
+                const uiImageRight = document.getElementById('uiImageRight');
+                const featureCards = document.querySelectorAll('.feature-rectangle-card');
+                
+                // Main image is already visible, just ensure it's in place
+                if (uiImageMain) {
+                    uiImageMain.style.opacity = '1';
+                    uiImageMain.style.transform = 'scale(1)';
+                }
+                
+                // Animate side images sliding in from left and right with slow animation
+                setTimeout(() => {
+                    if (uiImageLeft) {
+                        uiImageLeft.classList.remove('visible');
+                        void uiImageLeft.offsetWidth;
+                        uiImageLeft.classList.add('visible');
+                    }
+                }, 800); // Delay for side images
+                
+                setTimeout(() => {
+                    if (uiImageRight) {
+                        uiImageRight.classList.remove('visible');
+                        void uiImageRight.offsetWidth;
+                        uiImageRight.classList.add('visible');
+                    }
+                }, 1200); // Stagger the right image
+                
+                // Animate feature cards only when user scrolls to them
+                // We'll handle this separately based on scroll position
+            }
+            
+            resetFeaturesSection() {
+                const uiImageLeft = document.getElementById('uiImageLeft');
+                const uiImageRight = document.getElementById('uiImageRight');
+                const featureCards = document.querySelectorAll('.feature-rectangle-card');
+                const title = document.getElementById('featuresTitle');
+                
+                // Hide side images
+                if (uiImageLeft) uiImageLeft.classList.remove('visible');
+                if (uiImageRight) uiImageRight.classList.remove('visible');
+                
+                // Reset title
+                if (title) title.classList.remove('animated');
+                
+                // Reset feature cards
+                featureCards.forEach(card => {
+                    card.classList.remove('animated');
+                    card.classList.remove('active');
+                });
+            }
+            
+            // UPDATED: Steps Section Animation
+            animateStepsSection() {
+                this.animateSectionTitle('steps');
+                
+                const step1 = document.getElementById('step1');
+                const step2 = document.getElementById('step2');
+                const step3 = document.getElementById('step3');
+                const arrow1 = document.getElementById('arrow1');
+                const arrow2 = document.getElementById('arrow2');
+                
+                // Reset animations
+                [step1, step2, step3, arrow1, arrow2].forEach(el => {
+                    if (el) {
+                        el.classList.remove('animated');
+                        void el.offsetWidth;
+                    }
+                });
+                
+                // Animate step 1 with bounce effect
+                setTimeout(() => {
+                    if (step1) {
+                        step1.classList.add('animated');
+                    }
+                }, 300);
+                
+                // Animate arrow 1
+                setTimeout(() => {
+                    if (arrow1) arrow1.classList.add('animated');
+                }, 800);
+                
+                // Animate step 2
+                setTimeout(() => {
+                    if (step2) {
+                        step2.classList.add('animated');
+                    }
+                }, 1100);
+                
+                // Animate arrow 2
+                setTimeout(() => {
+                    if (arrow2) arrow2.classList.add('animated');
+                }, 1600);
+                
+                // Animate step 3
+                setTimeout(() => {
+                    if (step3) {
+                        step3.classList.add('animated');
+                    }
+                }, 1900);
+            }
+            
+            resetStepsSection() {
+                const step1 = document.getElementById('step1');
+                const step2 = document.getElementById('step2');
+                const step3 = document.getElementById('step3');
+                const arrow1 = document.getElementById('arrow1');
+                const arrow2 = document.getElementById('arrow2');
+                const title = document.getElementById('stepsTitle');
+                
+                // Reset all animations
+                [step1, step2, step3, arrow1, arrow2].forEach(el => {
+                    if (el) {
+                        el.classList.remove('animated');
+                    }
+                });
+                
+                if (title) title.classList.remove('animated');
+            }
+            
+            // UPDATED: Team Section Animations - Staggered animation for 6 members
+            animateTeamSection() {
+                this.animateSectionTitle('team');
+                
+                const teamMembers = document.querySelectorAll('.team-member');
+                
+                teamMembers.forEach((member, index) => {
+                    member.classList.remove('animated');
+                    void member.offsetWidth;
+                    setTimeout(() => {
+                        member.classList.add('animated');
+                    }, index * 100); // Staggered animation
+                });
+            }
+            
+            resetTeamSection() {
+                const teamMembers = document.querySelectorAll('.team-member');
+                const title = document.getElementById('teamTitle');
+                
+                teamMembers.forEach(member => {
+                    member.classList.remove('animated');
+                });
+                
+                if (title) title.classList.remove('animated');
+            }
+            
+            // Download Section Animation
+            animateDownloadSection() {
+                this.animateSectionTitle('download');
+                
+                const downloadButtons = document.querySelectorAll('.download-btn');
+                
+                downloadButtons.forEach((button, index) => {
+                    button.classList.remove('animated');
+                    void button.offsetWidth;
+                    setTimeout(() => {
+                        button.classList.add('animated');
+                    }, index * 200 + 300);
+                });
+            }
+            
+            resetDownloadSection() {
+                const title = document.getElementById('downloadTitle');
+                const downloadButtons = document.querySelectorAll('.download-btn');
+                
+                if (title) title.classList.remove('animated');
+                downloadButtons.forEach(button => {
+                    button.classList.remove('animated');
+                });
+            }
+            
+            // Contact Section Animations
+            animateContactSection() {
+                this.animateSectionTitle('contact');
+                
+                const contactContainer = document.getElementById('contactContainer');
+                const infoItems = document.querySelectorAll('.info-item');
+                const socialIcons = document.querySelectorAll('.social-icon');
+                const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+                const submitButton = document.querySelector('.contact-form .cta-button');
+                
+                // Animate contact container
+                contactContainer.classList.remove('animated');
+                void contactContainer.offsetWidth;
+                setTimeout(() => {
+                    contactContainer.classList.add('animated');
+                }, 300);
+                
+                // Animate contact info items
+                infoItems.forEach((item, index) => {
+                    item.classList.remove('animated');
+                    void item.offsetWidth;
+                    setTimeout(() => {
+                        item.classList.add('animated');
+                    }, index * 200 + 500);
+                });
+                
+                // Animate form inputs
+                formInputs.forEach((input, index) => {
+                    input.classList.remove('animated');
+                    void input.offsetWidth;
+                    setTimeout(() => {
+                        input.classList.add('animated');
+                    }, index * 200 + 1100);
+                });
+                
+                // Animate submit button
+                submitButton.classList.remove('animated');
+                void submitButton.offsetWidth;
+                setTimeout(() => {
+                    submitButton.classList.add('animated');
+                }, 1700);
+                
+                // Animate social icons
+                socialIcons.forEach((icon, index) => {
+                    icon.classList.remove('animated');
+                    void icon.offsetWidth;
+                    setTimeout(() => {
+                        icon.classList.add('animated');
+                    }, index * 150 + 900);
+                });
+            }
+            
+            resetContactSection() {
+                const contactContainer = document.getElementById('contactContainer');
+                const infoItems = document.querySelectorAll('.info-item');
+                const socialIcons = document.querySelectorAll('.social-icon');
+                const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+                const submitButton = document.querySelector('.contact-form .cta-button');
+                const title = document.getElementById('contactTitle');
+                
+                contactContainer.classList.remove('animated');
+                infoItems.forEach(item => item.classList.remove('animated'));
+                socialIcons.forEach(icon => icon.classList.remove('animated'));
+                formInputs.forEach(input => input.classList.remove('animated'));
+                submitButton.classList.remove('animated');
+                
+                if (title) title.classList.remove('animated');
+            }
+        }
+        
+        // Initialize Animation Manager
+        const animationManager = new AnimationManager();
+        
+        // --- Feature Cards Animation on Scroll ---
+        const featureCards = document.querySelectorAll('.feature-rectangle-card');
+        
+        // Function to check if feature cards are in view
+        function checkFeatureCardsInView() {
+            const featuresSection = document.getElementById('features');
+            if (!featuresSection) return;
+            
+            const sectionRect = featuresSection.getBoundingClientRect();
+            const sectionTop = sectionRect.top;
+            const sectionBottom = sectionRect.bottom;
+            const windowHeight = window.innerHeight;
+            
+            // Only animate feature cards when the features section is mostly in view
+            if (sectionTop < windowHeight * 0.7 && sectionBottom > windowHeight * 0.3) {
+                featureCards.forEach((card, index) => {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardTop = cardRect.top;
+                    const cardBottom = cardRect.bottom;
+                    
+                    // If card is in view, animate it
+                    if (cardTop < windowHeight * 0.9 && cardBottom > 0) {
+                        if (!card.classList.contains('animated')) {
+                            card.classList.remove('animated');
+                            void card.offsetWidth;
+                            setTimeout(() => {
+                                card.classList.add('animated');
+                                // Start fill animation after card appears
+                                setTimeout(() => {
+                                    card.classList.add('active');
+                                }, 500);
+                            }, index * 150);
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Add scroll event for feature cards
+        window.addEventListener('scroll', checkFeatureCardsInView);
+        
+        // Add event listeners to feature cards for hover effects
+        featureCards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                // Add a subtle scale effect on hover
+                this.style.transform = 'scale(1.02)';
+                
+                // Get UI images
+                const uiImageMain = document.getElementById('uiImageMain');
+                const uiImageLeft = document.getElementById('uiImageLeft');
+                const uiImageRight = document.getElementById('uiImageRight');
+                
+                // Add subtle animation to UI images when feature card is hovered
+                if (uiImageMain && uiImageLeft && uiImageRight) {
+                    uiImageMain.style.transform = 'scale(1.05)';
+                    uiImageLeft.style.transform = 'translateX(-20px) rotate(-3deg)';
+                    uiImageRight.style.transform = 'translateX(20px) rotate(3deg)';
+                    
+                    // Reset after a short delay
+                    setTimeout(() => {
+                        uiImageMain.style.transform = 'scale(1)';
+                        uiImageLeft.style.transform = 'translateX(0) rotate(0deg)';
+                        uiImageRight.style.transform = 'translateX(0) rotate(0deg)';
+                    }, 300);
+                }
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+        
+        // --- Typing Animation ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const typingText = document.querySelector('.typing-text');
+            const text = "Your Route to Cleaner City";
+            
+            // Clear and reset the text
+            typingText.textContent = '';
+            typingText.style.width = '0';
+            typingText.style.opacity = '0';
+            
+            // Start typing animation after page load
+            setTimeout(() => {
+                let i = 0;
+                const typeWriter = () => {
+                    if (i < text.length) {
+                        typingText.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, 40);
+                    } else {
+                        // Remove cursor after typing completes
+                        setTimeout(() => {
+                            typingText.style.borderRight = 'none';
+                            typingText.style.opacity = '1';
+                        }, 300);
+                    }
+                };
+                typeWriter();
+            }, 500);
+            
+            // Force background animations to stay active
+            setTimeout(() => {
+                const backgroundLines = document.querySelectorAll('.horizontal-line, .vertical-line');
+                backgroundLines.forEach(line => {
+                    // Reset animation to ensure continuous movement
+                    line.style.animation = 'none';
+                    void line.offsetWidth; // Trigger reflow
+                    line.style.animation = '';
+                });
+            }, 1000);
+            
+            // Periodically reset animations to prevent them from stopping
+            setInterval(() => {
+                const backgroundLines = document.querySelectorAll('.horizontal-line, .vertical-line');
+                backgroundLines.forEach(line => {
+                    // Randomly reset some animations to keep movement varied
+                    if (Math.random() > 0.7) {
+                        const computedStyle = window.getComputedStyle(line);
+                        const currentAnimation = computedStyle.animation;
+                        line.style.animation = 'none';
+                        void line.offsetWidth;
+                        line.style.animation = currentAnimation;
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
