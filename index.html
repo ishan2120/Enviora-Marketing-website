@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviora | Smart Waste Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">''
+    <link rel="icon" type="image/png" href="/images/logo.png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* --- COLOR PALETTE --- */
+        :root {
+            --deep-forest: #1E3F2F;
+            --sage-green: #A7B99A;
+            --charcoal: #2C3E50;
+            --off-white: #F9F9F9;
+            --white: #FEFEFE;
+            --light-green: #e8f5e9;
+            --glass-border: rgba(30, 63, 47, 0.15);
+            --shadow-soft: 0 15px 40px rgba(30, 63, 47, 0.08);
+            --gradient-forest: linear-gradient(135deg, var(--deep-forest) 0%, #2a5c42 100%);
+        }
+
+        /* --- GLOBAL --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--off-white);
+            color: var(--charcoal);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        section { padding: 80px 0; position: relative; z-index: 2; }
+        .container { max-width: 1250px; margin: 0 auto; padding: 0 25px; position: relative; z-index: 2; }
+
+        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; color: var(--deep-forest); }
+
+        /* --- MODERN SCROLL REVEAL ANIMATIONS --- */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1.0s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered Animations */
+        .stagger-parent .mf-item, 
+        .stagger-parent .team-member {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .stagger-parent.active .mf-item,
+        .stagger-parent.active .team-member {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-parent.active .mf-item:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-parent.active .mf-item:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-parent.active .mf-item:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-parent.active .mf-item:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-parent.active .mf-item:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-parent.active .mf-item:nth-child(6) { transition-delay: 0.6s; }
+        
+        .stagger-parent.active .team-member:nth-child(1) { transition-delay: 0.1s; }
+        .stagger-parent.active .team-member:nth-child(2) { transition-delay: 0.2s; }
+        .stagger-parent.active .team-member:nth-child(3) { transition-delay: 0.3s; }
+        .stagger-parent.active .team-member:nth-child(4) { transition-delay: 0.4s; }
+        .stagger-parent.active .team-member:nth-child(5) { transition-delay: 0.5s; }
+        .stagger-parent.active .team-member:nth-child(6) { transition-delay: 0.6s; }
+
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 1250px; padding: 15px 40px; height: 70px;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px);
+            border-radius: 50px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; border: 1px solid var(--glass-border); transition: 0.4s ease;
+        }
+        .navbar.scrolled { top: 10px; width: 96%; background: rgba(255, 255, 255, 0.98); }
+        
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-img { width: 35px; height: 35px; }
+        .logo-img img { width: 100%; height: 100%; object-fit: contain; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--deep-forest); letter-spacing: -0.5px; }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 600; font-size: 0.9rem; color: var(--deep-forest); text-transform: uppercase; letter-spacing: 0.5px; }
+        .nav-links a:hover { color: var(--sage-green); }
+
+        /* --- HERO SECTION --- */
+        .hero-section-split {
+            height: 100vh; width: 100%; display: flex; padding: 0; position: relative; overflow: hidden;
+            transition: background 0.6s ease;
+            
+        }
+        .hero-section-split.centered-view {
+            background-color: var(--white);
+        }
+        .hero-left-content {
+            width: 50%; height: 100%; display: flex; align-items: center;
+            padding-left: max(5%, calc((100vw - 1250px) / 2 + 25px)); padding-right: 40px; padding-top: 100px;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .hero-content-wrapper { max-width: 600px; transition: margin 0.8s ease; }
+        
+        .hero-title {
+            font-size: 3rem; font-weight: 800; line-height: 1.05; margin-bottom: 100px;
+            letter-spacing: -1.5px; color: var(--deep-forest);
+            opacity: 0; animation: fadeUp 1s ease 0.2s forwards;
+            transition: text-align 0.8s ease;
+        }
+        .hero-description {
+            font-size: 1.25rem; color: var(--charcoal); margin-bottom: 40px; font-weight: 400;
+            border-left: 4px solid var(--sage-green); padding-left: 20px;
+            opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
+            transition: all 0.8s ease;
+        }
+        .hero-cta-button {
+            background-color: var(--deep-forest); color: var(--white); padding: 18px 50px;
+            border-radius: 6px; font-weight: 600; display: inline-block; transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(30, 63, 47, 0.2); border: none; cursor: pointer;
+            font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;
+            opacity: 0; animation: fadeUp 1s ease 0.6s forwards;
+        }
+        .hero-cta-button:hover {
+            transform: translateY(-3px); background-color: var(--sage-green); color: var(--deep-forest);
+        }
+        .hero-right-image {
+            position: absolute; top: 100px; right: 0; width: 50%; height: calc(100vh - 100px); z-index: 1;
+            opacity: 0; animation: fadeIn 1.5s ease 0.5s forwards;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), opacity 0.5s ease;
+        }
+        .hero-img-full {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 0; box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+            border-radius: 15px;
+        }
+
+        /* Hero Centered State (Triggered by Scroll) */
+        .hero-section-split.centered-view .hero-right-image {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        .hero-section-split.centered-view .hero-left-content {
+            width: 100%;
+            padding-right: max(5%, calc((100vw - 1250px) / 2 + 25px)); /* Match left padding */
+            justify-content: center;
+            text-align: center;
+        }
+        .hero-section-split.centered-view .hero-content-wrapper {
+            margin: 0 auto;
+        }
+        .hero-section-split.centered-view .hero-description {
+            border-left: none;
+            padding-left: 0;
+        }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+        /* --- MODERN TITLES --- */
+        .modern-title-wrapper {
+            position: relative; text-align: center; margin-bottom: 70px; padding: 20px 0;
+        }
+        .section-title {
+            font-size: 3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 3px;
+            position: relative; z-index: 2; background: var(--gradient-forest);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
+        }
+        .title-watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 6rem; font-weight: 900; color: rgba(167, 185, 154, 0.15); z-index: 1; line-height: 1;
+        }
+
+
+        /* --- SERVICES GRID (UPDATED) --- */
+        .modern-features-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; /* Increased gap */
+        }
+        .mf-item {
+            position: relative; 
+            display: flex; flex-direction: column;
+            cursor: pointer;
+            /* Removed absolute height to allow text flow */
+        }
+        .mf-wide { grid-column: span 2; }
+        .mf-tall { grid-row: span 2; }
+        
+        .mf-img-wrapper {
+            width: 100%; 
+            height: 250px; /* Fixed height for image area */
+            border-radius: 20px; 
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        .mf-tall .mf-img-wrapper { height: 100%; min-height: 500px;} /* Taller image for tall item */
+
+        .mf-image {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .mf-text-content {
+            margin-top: 20px;
+            text-align: left;
+            padding: 0 10px;
+        }
+        .mf-text-content h3 {
+            font-size: 1.4rem; color: var(--deep-forest); margin-bottom: 8px; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .mf-text-content i { color: var(--sage-green); font-size: 1.2rem;}
+        .mf-text-content p { color: var(--charcoal); font-size: 0.95rem; font-weight: 400; opacity: 0.8; }
+
+        /* Hover Effects */
+        .mf-item:hover .mf-image { transform: scale(1.1); }
+        .mf-item:hover .mf-text-content h3 { color: var(--sage-green); transition: 0.3s; }
+
+
+        /* --- APP SHOWCASE (UPDATED TRANSITIONS) --- */
+        #app-showcase {
+            height: 350vh; padding: 1px; background: var(--white); position: relative;
+        }
+        .app-sticky-wrapper {
+            position: sticky; top: 0; height: 100vh; width: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            overflow: hidden;
+            
+        }
+        .app-content-container {
+            position: absolute; top: 25%; left: 10%;
+            transform: translateY(-50%); text-align: left; z-index: 10; max-width: 400px;
+            transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            
+            
+        }
+        .app-showcase-title {
+            text-align: left; margin-bottom: 20px; 
+        }
+        .app-showcase-title .title-watermark {
+            left: 0; transform: translate(-30%, -50%); 
+        }
+        .app-description {
+            font-size: 1.1rem; color: #666; margin-top: 20px; opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+            line-height: 1.7;
+        }
+        
+        
+        /* Phone Frame */
+        .phone-frame {
+            width: 272px; height: 570px; background: #111; border-radius: 40px;
+            border: 6px solid #2C3E50; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            position: relative; z-index: 5; overflow: hidden;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform-origin: center center;
+            
+        }
+        .phone-frame::after {
+            content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+            width: 120px; height: 25px; background: #2C3E50;
+            border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; z-index: 20;
+        }
+        .screen-stack { width: 100%; height: 100%; position: relative; background: #fff; }
+        .app-screen-img {
+            position: absolute; top: 100%; left: 0; width: 100%; height: 100%;
+            object-fit: cover; transition: top 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); z-index: 1;
+        }
+        .app-screen-img.active { top: 0; }
+        .app-screen-img:nth-child(1) { z-index: 1; }
+        .app-screen-img:nth-child(2) { z-index: 2; }
+        .app-screen-img:nth-child(3) { z-index: 3; }
+        .app-screen-img:nth-child(4) { z-index: 4; }
+        .app-screen-img:nth-child(5) { z-index: 5; }
+        .app-screen-img:nth-child(6) { z-index: 6; }
+
+        /* App Section States */
+        /* State 1: Rotated */
+
+        /* State 2: Exit & Center Text */
+        .app-sticky-wrapper.state-exit .phone-frame {
+            transform: rotate(90deg) translateX(200vw); /* Move way off screen */
+            opacity: 20;
+        }
+        .app-sticky-wrapper.state-exit .app-content-container {
+            left: 50%; 
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            max-width: 700px;
+        }
+        .app-sticky-wrapper.state-exit .app-showcase-title {
+            text-align: center;
+        }
+        .app-sticky-wrapper.state-exit .app-showcase-title .title-watermark {
+            left: 50%; transform: translate(-50%, -50%);
+        }
+
+
+        /* --- PROTOCOL SECTION --- */
+        .protocol-timeline {
+            position: relative; display: flex; justify-content: space-between; align-items: flex-start;
+            padding: 40px 0; max-width: 1000px; margin: 0 auto;
+        }
+        .protocol-line-bg { position: absolute; top: 50px; left: 0; width: 100%; height: 4px; background: rgba(30, 63, 47, 0.1); border-radius: 2px; z-index: 1; }
+        .protocol-line-fill {
+            position: absolute; top: 50px; left: 0; width: 0%; height: 4px;
+            background: linear-gradient(90deg, var(--deep-forest), var(--sage-green));
+            border-radius: 2px; z-index: 1; transition: width 2.5s ease-out; 
+        }
+        .protocol-line-fill.draw { width: 100%; }
+        .protocol-step {
+            position: relative; z-index: 2; width: 30%; background: transparent; text-align: center; opacity: 0; transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .protocol-step.active { opacity: 1; transform: translateY(0); }
+        .protocol-icon-box {
+            width: 100px; height: 100px; margin: 0 auto 25px auto; background: var(--white); border: 4px solid var(--white); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: var(--deep-forest);
+            box-shadow: 0 0 0 4px rgba(30, 63, 47, 0.1); transition: all 0.4s ease; position: relative;
+        }
+        .protocol-num {
+            position: absolute; top: -5px; right: -5px; width: 30px; height: 30px; background: var(--deep-forest); color: white; border-radius: 50%;
+            font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid white;
+        }
+        .protocol-content {
+            background: var(--white); padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; transition: transform 0.3s ease;
+        }
+        .protocol-content::before {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 10px solid var(--white);
+        }
+        .protocol-content h4 { font-size: 1.3rem; margin-bottom: 10px; color: var(--deep-forest); }
+        .protocol-content p { font-size: 0.95rem; color: #666; line-height: 1.5; }
+        .protocol-step:hover .protocol-icon-box { transform: scale(1.1); background: var(--deep-forest); color: var(--white); box-shadow: 0 0 0 8px rgba(167, 185, 154, 0.3); }
+        .protocol-step:hover .protocol-content { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(30, 63, 47, 0.15); }
+
+        /* --- DOWNLOAD SECTION --- */
+        .download-section-new { background: var(--white); text-align: center; padding: 120px 0; }
+        .download-buttons-new { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .download-btn {
+            background-color: var(--deep-forest); color: var(--white); padding: 18px 40px; border-radius: 10px; font-weight: 600;
+            display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 20px rgba(30, 63, 47, 0.2); transition: all 0.3s ease;
+            border: none; cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 1.1rem; min-width: 250px; justify-content: center;
+        }
+        .download-btn i { font-size: 1.8rem; }
+        .download-btn:hover { transform: translateY(-5px); background-color: var(--sage-green); color: var(--deep-forest); box-shadow: 0 15px 30px rgba(30, 63, 47, 0.3); }
+
+        /* --- TEAM SECTION (UPDATED LAYOUT) --- */
+        .team-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* 2 columns like the image */
+            gap: 30px; 
+        }
+        .team-member { 
+            background: var(--white); 
+            border: 1px solid #eee; 
+            border-radius: 12px; /* More rounded */
+            overflow: hidden; 
+            transition: 0.3s; 
+            display: flex; /* Horizontal Layout */
+            align-items: center;
+            padding: 20px; /* Padding inside card */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+        }
+        .team-member:hover { 
+            box-shadow: 0 15px 30px rgba(30, 63, 47, 0.15); 
+            border-color: var(--sage-green); 
+            transform: translateY(-5px);
+        }
+        .team-img-container { 
+            width: 100px; /* Fixed square size */
+            height: 100px; 
+            border-radius: 10px; /* Rounded image */
+            overflow: hidden; 
+            flex-shrink: 0; /* Prevent image from squishing */
+            margin-right: 25px; /* Spacing between image and text */
+        }
+        .team-member img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            filter: grayscale(100%); 
+            transition: 0.4s; 
+        }
+        .team-member:hover img { 
+            filter: grayscale(0%); 
+            transform: scale(1.1); 
+        }
+        .member-info { 
+            padding: 0; 
+            border-top: none; 
+            background: transparent; 
+            flex-grow: 1;
+        }
+        .member-info h3 { 
+            font-size: 1.2rem; 
+            margin-bottom: 5px; 
+            color: var(--deep-forest); 
+            font-weight: 700; 
+        }
+        .member-role { 
+            color: var(--sage-green); 
+            font-size: 0.85rem; 
+            text-transform: uppercase; 
+            font-weight: 600; 
+            letter-spacing: 1px; 
+            margin-bottom: 8px; 
+            display: block; 
+        }
+        .member-social { 
+            display: flex; 
+            gap: 12px; 
+            opacity: 0.6; 
+        }
+        .member-social a { 
+            font-size: 1.1rem; 
+            transition: 0.3s; 
+        }
+        .member-social a:hover { 
+            opacity: 1; 
+            color: var(--deep-forest); 
+        }
+
+
+        /* --- CONTACT SECTION --- */
+        .contact-container { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-soft); display: grid; grid-template-columns: 1fr 1.5fr; overflow: hidden; border: 1px solid #eee; }
+        .contact-info { background: var(--deep-forest); color: var(--white); padding: 50px; }
+        .contact-info h2 { color: var(--white); border-bottom: 1px solid var(--sage-green); padding-bottom: 15px; margin-bottom: 25px; }
+        .info-item { margin-top: 25px; }
+        .info-item strong { color: var(--sage-green); display: block; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; }
+        .info-item p { color: rgba(255,255,255,0.9); font-size: 1rem; }
+        .contact-form-container { padding: 50px; }
+        .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .contact-form textarea { grid-column: span 2; }
+        .contact-form button { grid-column: span 2; width: 100%; }
+        .contact-form input, .contact-form textarea { padding: 15px; border: 1px solid #ddd; border-radius: 4px; background: var(--off-white); outline: none; font-size: 1rem; }
+        .contact-form input:focus, .contact-form textarea:focus { border-color: var(--deep-forest); background: #fff; }
+        
+        .cta-button {
+            background-color: var(--deep-forest); color: var(--white); padding: 15px;
+            border-radius: 4px; font-weight: 600; transition: 0.3s; border: none; cursor: pointer; text-transform: uppercase;
+        }
+        .cta-button:hover { background-color: var(--sage-green); color: var(--deep-forest); }
+
+
+        /* --- FOOTER --- */
+        .footer-modern { background: linear-gradient(to bottom, #1E3F2F, #152e22); color: var(--white); padding: 100px 0 30px 0; position: relative; overflow: hidden; margin-top: auto; }
+        .footer-watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-size: 50rem; color: var(--white); opacity: 0.03; pointer-events: none; z-index: 0; }
+        .footer-content { position: relative; z-index: 1; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-brand h2 { color: var(--white); font-size: 2rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;}
+        .footer-brand p { color: rgba(255,255,255,0.7); line-height: 1.8; max-width: 300px; margin-bottom: 30px; }
+        .footer-col h5 { color: var(--sage-green); font-size: 1.1rem; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-col ul li { margin-bottom: 15px; }
+        .footer-col ul li a { color: rgba(255,255,255,0.8); transition: 0.3s; font-size: 0.95rem; }
+        .footer-col ul li a:hover { color: var(--sage-green); padding-left: 5px; }
+        .footer-newsletter input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 12px; border-radius: 4px; color: white; width: 100%; margin-bottom: 10px; }
+        .footer-newsletter button { background: var(--sage-green); color: var(--deep-forest); border: none; padding: 12px; border-radius: 4px; width: 100%; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .footer-newsletter button:hover { background: var(--white); }
+        .footer-bottom { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; text-align: center; display: flex; justify-content: space-between; align-items: center; }
+        .copyright-text { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+        .footer-bottom-links a { color: rgba(255,255,255,0.5); margin-left: 20px; font-size: 0.9rem; }
+        .footer-bottom-links a:hover { color: var(--white); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .modern-features-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 900px) {
+            .navbar { width: 95%; bottom: 20px; top: auto; flex-direction: row; justify-content: space-around;}
+            .logo-container { display: none; }
+            .nav-links { gap: 15px; font-size: 0.8rem; }
+            .hero-section-split { flex-direction: column; height: auto; }
+            .hero-left-content { width: 100%; padding: 120px 25px 50px 25px; text-align: center; }
+            .hero-content-wrapper { margin: 0 auto; }
+            .hero-right-image { position: relative; width: 100%; height: 400px; top: 0; }
+            .hero-title { font-size: 3rem; }
+            
+            /* Reset grid to stack */
+            .modern-features-grid { grid-template-columns: 1fr; }
+            .mf-wide, .mf-tall { grid-column: span 1; grid-row: span 1; }
+            
+            .protocol-timeline { flex-direction: column; align-items: center; }
+            .protocol-line-bg, .protocol-line-fill { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+            .protocol-line-fill { width: 4px; height: 0%; transition: height 2.5s ease-out; }
+            .protocol-line-fill.draw { height: 100%; }
+            .protocol-step { width: 100%; max-width: 400px; margin-bottom: 40px; }
+            .contact-container { grid-template-columns: 1fr; }
+            .contact-form { grid-template-columns: 1fr; }
+            .contact-form textarea, .contact-form button { grid-column: span 1; }
+            
+            /* Mobile adjustment for App Title */
+            .app-content-container {
+                top: 100px; left: 50%; transform: translateX(-50%); 
+                text-align: center; width: 100%;
+            }
+            .app-showcase-title .title-watermark { left: 50%; transform: translate(-50%, -50%); }
+
+            /* Team Grid Mobile */
+            .team-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="logo-container">
+                <div class="logo-img"><img src="images/logo.png" alt="Logo"></div>
+                <div class="logo">Enviora</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#product">Product</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#app-showcase">App</a></li>
+                <li><a href="#steps">Steps</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#team">Team</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="product" class="hero-section-split">
+            <div class="hero-left-content">
+                <div class="hero-content-wrapper">
+                    <h1 class="hero-title">Your Route To A Cleaner City</h1>
+                    <p class="hero-description">A professional geospatial waste management solution connecting citizens, municipalities, and recyclers for a sustainable future.</p>
+                    <a href="#download" class="hero-cta-button">System Access</a>
+                </div>
+            </div>
+            <div class="hero-right-image">
+                <img src="images/hero5.png" alt="Clean City" class="hero-img-full">
+            </div>
+        </section>
+
+        <section id="services">
+            <div class="container reveal-up">
+                <div class="modern-title-wrapper">
+                    <div class="title-watermark">01</div>
+                    <h2 class="section-title">Our Services</h2>
+                </div>
+                
+                <div class="modern-features-grid stagger-parent">
+                    <div class="mf-item mf-wide">
+                        <div class="mf-img-wrapper">
+                            <img src="images/location.jpg" class="mf-image" alt="Location Tracking">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-map-marked-alt"></i>Real-Time Vehicle Tracking</h3>
+                            <p>Track waste collection vehicles live on an interactive map. See the exact location of collection trucks and know precisely when they'll reach your street for complete transparency.</p>
+                        </div>
+                    </div>
+
+                    <div class="mf-item">
+                        <div class="mf-img-wrapper">
+                            <img src="images/notification.jpg" class="mf-image" alt="Push Alerts">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-bell"></i> Automated Push Notifications</h3>
+                            <p>Receive timely reminders about upcoming waste collection dates. Stay informed about any schedule changes or if collection trucks fail to arrive in your area.</p>
+                        </div>
+                    </div>
+
+                    <div class="mf-item mf-tall">
+                        <div class="mf-img-wrapper">
+                            <img src="images/shedules.jpg" class="mf-image" alt="Fleet Telemetry">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-truck"></i> Collection Schedules</h3>
+                            <p>View waste collection schedules tailored specifically to your location. Know exactly when to put out your bins with personalised timetables for your area.</p>
+                        </div>
+                    </div>
+
+                    <div class="mf-item">
+                        <div class="mf-img-wrapper">
+                            <img src="images/guide.jpg" class="mf-image" alt="Segregation AI">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-recycle"></i> Interactive Segregation Guide</h3>
+                            <p>Learn proper waste separation with our visual educational guide featuring pictures and videos. Understand exactly which waste goes into which bin for effective segregation at source.</p>
+                        </div>
+                    </div>
+
+                    <div class="mf-item">
+                        <div class="mf-img-wrapper">
+                            <img src="images/bulk.jpg" class="mf-image" alt="Bulk Pickup">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-box-open"></i> Special Pickup Requests</h3>
+                            <p>Request special collections for bulky items that cannot be accommodated during regular pickups. Dispose of large items conveniently through the platform.</p>
+                        </div>
+                    </div>
+
+                    <div class="mf-item mf-wide">
+                        <div class="mf-img-wrapper">
+                            <img src="images/report.jpg" class="mf-image" alt="Civic Connect">
+                        </div>
+                        <div class="mf-text-content">
+                            <h3><i class="fas fa-users"></i> Integrated Reporting System</h3>
+                            <p>Report uncollected waste and illegal dumping directly to waste management supervisors through the app. Help maintain cleanliness in your community with just a few taps.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="app-showcase">
+            <div class="app-sticky-wrapper" id="stickyWrapper">
+                <div class="app-content-container reveal-up">
+                    <div class="modern-title-wrapper app-showcase-title">
+                        <div class="title-watermark">APP</div>
+                        <h2 class="section-title">App Interface</h2>
+                    </div>
+                    <p class="app-description">
+                        Experience a seamless, user-centric interface designed for efficiency. Our app features intuitive navigation, real-time data visualization, and a dark-mode optimized layout to ensure you stay connected to your city's waste management grid with ease.
+                    </p>
+                </div>
+                
+                <div class="phone-frame reveal-up" style="transition-delay: 0.2s;">
+                    <div class="screen-stack">
+                        <img src="images/ui1.png" class="app-screen-img" alt="UI 1">
+                        <img src="images/ui2.png" class="app-screen-img" alt="UI 2">
+                        <img src="images/ui3.png" class="app-screen-img" alt="UI 3">
+                        <img src="images/ui4.png" class="app-screen-img" alt="UI 4">
+                        <img src="images/ui5.png" class="app-screen-img" alt="UI 5">
+                        <img src="images/ui6.png" class="app-screen-img" alt="UI 6">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="steps" class="steps-section">
+            <div class="container reveal-up">
+                <div class="modern-title-wrapper">
+                    <div class="title-watermark">02</div>
+                    <h2 class="section-title">Protocol</h2>
+                </div>
+                
+                <div class="protocol-timeline">
+                    <div class="protocol-line-bg"></div>
+                    <div class="protocol-line-fill"></div>
+
+                    <div class="protocol-step">
+                        <div class="protocol-icon-box">
+                            <i class="fas fa-download"></i>
+                            <div class="protocol-num">1</div>
+                        </div>
+                        <div class="protocol-content">
+                            <h4>Initialize</h4>
+                            <p>Securely download the Enviora client from your verified app store repository.</p>
+                        </div>
+                    </div>
+
+                    <div class="protocol-step">
+                        <div class="protocol-icon-box">
+                            <i class="fas fa-user-shield"></i>
+                            <div class="protocol-num">2</div>
+                        </div>
+                        <div class="protocol-content">
+                            <h4>Authenticate</h4>
+                            <p>Verify your identity and link your geolocation to the municipal grid.</p>
+                        </div>
+                    </div>
+
+                    <div class="protocol-step">
+                        <div class="protocol-icon-box">
+                            <i class="fas fa-satellite-dish"></i>
+                            <div class="protocol-num">3</div>
+                        </div>
+                        <div class="protocol-content">
+                            <h4>Synchronize</h4>
+                            <p>Receive live telemetry data and manage waste logistics instantly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="download" class="download-section-new">
+            <div class="container reveal-up">
+                <div class="modern-title-wrapper">
+                    <div class="title-watermark">03</div>
+                    <h2 class="section-title">Get The App</h2>
+                </div>
+                <p style="margin-bottom: 40px; font-size: 1.1rem; color: var(--charcoal); max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Join the municipal network. Download the official Enviora application for your mobile operating system.
+                </p>
+                <div class="download-buttons-new">
+                    <button class="download-btn apple">
+                        <i class="fab fa-apple"></i>
+                        <span>Download on the<br>App Store</span>
+                    </button>
+                    <button class="download-btn google">
+                        <i class="fab fa-google-play"></i>
+                        <span>Get it on<br>Google Play</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="team">
+            <div class="container reveal-up">
+                <div class="modern-title-wrapper">
+                    <div class="title-watermark">04</div>
+                    <h2 class="section-title">Development Team</h2>
+                </div>
+                <div class="team-grid stagger-parent">
+                    <div class="team-member">
+                        <div class="team-img-container"><img src="images/yomali.jpg" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Yomali Madannayake</h3>
+                            <span class="member-role">Team Lead</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-img-container"><img src="images/kisanda.jpg" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Kisanda Ranudaya</h3>
+                            <span class="member-role">UI/UX Architect</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-img-container"><img src="images/senath2.jpg" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Senath Thejana</h3>
+                            <span class="member-role">Frontend Engineer</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-img-container"><img src="images/Thasara.JPG" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Vinuji Thasara</h3>
+                            <span class="member-role">Database Engineer</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="team-member">
+                        <div class="team-img-container"><img src="images/tharusha.jpg" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Tharusha Savindi</h3>
+                            <span class="member-role">Backend Engineer</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                      <div class="team-member">
+                        <div class="team-img-container"><img src="images/ishan.jpg" alt="Member"></div>
+                        <div class="member-info">
+                            <h3>Ishan Sandeepa</h3>
+                            <span class="member-role">Backend Engineer</span>
+                            <div class="member-social">
+                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                <a href="#"><i class="fas fa-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container reveal-up">
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h2>Contact Operations</h2>
+                        <div class="info-item">
+                            <strong>Headquarters</strong>
+                            <p>435 Galle Rd, Colombo 00300</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Hotline</strong>
+                            <p>076-2997280</p>
+                        </div>
+                        <div class="info-item">
+                            <strong>Inquiries</strong>
+                            <p>info@enviora.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-form-container">
+                        <form class="contact-form">
+                            <input type="text" placeholder="Full Name">
+                            <input type="email" placeholder="Email Address">
+                            <textarea placeholder="Message Protocol..." rows="4"></textarea>
+                            <button class="cta-button">Transmit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-modern">
+        <i class="fas fa-leaf footer-watermark"></i>
+        
+        <div class="container reveal-up">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h2><i class="fas fa-leaf" style="color:var(--sage-green)"></i> Enviora</h2>
+                    <p>Revolutionizing municipal waste management through advanced geospatial tracking and community engagement technologies.</p>
+                    <div class="member-social" style="opacity: 1;">
+                        <a href="#" style="color:white; margin-right:15px; font-size:1.2rem"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" style="color:white; margin-right:15px; font-size:1.2rem"><i class="fab fa-twitter"></i></a>
+                        <a href="#" style="color:white; font-size:1.2rem"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h5>Navigation</h5>
+                    <ul>
+                        <li><a href="#product">Product Overview</a></li>
+                        <li><a href="#services">Our Services</a></li>
+                        <li><a href="#steps">Usage Protocol</a></li>
+                        <li><a href="#team">Development Team</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Data Compliance</a></li>
+                        <li><a href="#">User Agreement</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col footer-newsletter">
+                    <h5>Updates</h5>
+                    <p style="font-size: 0.9rem; margin-bottom: 10px; color: rgba(255,255,255,0.7);">Subscribe for system updates.</p>
+                    <form>
+                        <input type="email" placeholder="Enter your email">
+                        <button type="button">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright-text">&copy; 2025 Enviora_App // CS-105-IIT // All Rights Reserved</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Support</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- NAVBAR & HERO SCROLL LOGIC ---
+        const nav = document.getElementById('navbar');
+        const heroSection = document.getElementById('product');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            // Navbar
+            if (scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+
+            // Hero Section Transition (Move image right, Center content)
+            if (scrollY > 100) {
+                heroSection.classList.add('centered-view');
+            } else {
+                heroSection.classList.remove('centered-view');
+            }
+        });
+
+        // --- MODERN SCROLL REVEAL OBSERVER ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Trigger Protocol Timeline drawing
+                    if(entry.target.id === 'steps') {
+                        setTimeout(() => {
+                            const line = entry.target.querySelector('.protocol-line-fill');
+                            if(line) line.classList.add('draw');
+                            const steps = entry.target.querySelectorAll('.protocol-step');
+                            steps.forEach(step => step.classList.add('active'));
+                        }, 500);
+                    }
+                    
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        const revealElements = document.querySelectorAll('.reveal-up, .stagger-parent, #services, #app-showcase, #steps');
+        revealElements.forEach(el => revealObserver.observe(el));
+
+
+        // --- APP SCROLL LOGIC (IMAGES -> ROTATE -> LEAVE -> CENTER) ---
+        const showcaseSection = document.getElementById('app-showcase');
+        const stickyWrapper = document.getElementById('stickyWrapper');
+        const appImages = document.querySelectorAll('.app-screen-img');
+        
+        window.addEventListener('scroll', () => {
+            if (!showcaseSection) return;
+            
+            const rect = showcaseSection.getBoundingClientRect();
+            const sectionHeight = showcaseSection.offsetHeight - window.innerHeight;
+            
+            // Calculate progress (0 to 1)
+            let progress = -rect.top / sectionHeight;
+            progress = Math.max(0, Math.min(progress, 1));
+            
+            // Phase 1: Image Scrolling (0% to 70% of scroll)
+            const imageScrollLimit = 0.7;
+            const totalImages = appImages.length;
+            
+            // Map progress 0-0.7 to 0-1 for images
+            let imageProgress = progress / imageScrollLimit;
+            if (imageProgress > 1) imageProgress = 1;
+
+            const activeIndex = Math.floor(imageProgress * (totalImages - 1));
+
+            appImages.forEach((img, index) => {
+                if (index <= activeIndex) {
+                    img.classList.add('active');
+                } else {
+                    img.classList.remove('active');
+                }
+            });
+
+            // Phase 2: Rotation (70% to 85%)
+            if (progress > 0.7 && progress <= 0.85) {
+                stickyWrapper.classList.add('state-rotate');
+                stickyWrapper.classList.remove('state-exit');
+            } 
+            // Phase 3: Exit & Center Text (85% to 100%)
+            else if (progress > 0.85) {
+                stickyWrapper.classList.add('state-rotate'); // Ensure it stays rotated
+                stickyWrapper.classList.add('state-exit');
+            } 
+            // Reset (Back to start)
+            else {
+                stickyWrapper.classList.remove('state-rotate');
+                stickyWrapper.classList.remove('state-exit');
+            }
+        });
+    </script>
+</body>
+</html>
