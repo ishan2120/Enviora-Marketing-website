@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enviora | Smart Waste Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">''
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="/images/logo.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
@@ -80,7 +80,6 @@
         .stagger-parent.active .team-member:nth-child(5) { transition-delay: 0.5s; }
         .stagger-parent.active .team-member:nth-child(6) { transition-delay: 0.6s; }
 
-
         /* --- NAVBAR --- */
         .navbar {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
@@ -101,11 +100,12 @@
         .nav-links a { font-weight: 600; font-size: 0.9rem; color: var(--deep-forest); text-transform: uppercase; letter-spacing: 0.5px; }
         .nav-links a:hover { color: var(--sage-green); }
 
+        .hamburger { display: none; font-size: 1.5rem; color: var(--deep-forest); cursor: pointer; }
+
         /* --- HERO SECTION --- */
         .hero-section-split {
             height: 100vh; width: 100%; display: flex; padding: 0; position: relative; overflow: hidden;
             transition: background 0.6s ease;
-            
         }
         .hero-section-split.centered-view {
             background-color: var(--white);
@@ -157,7 +157,7 @@
         }
         .hero-section-split.centered-view .hero-left-content {
             width: 100%;
-            padding-right: max(5%, calc((100vw - 1250px) / 2 + 25px)); /* Match left padding */
+            padding-right: max(5%, calc((100vw - 1250px) / 2 + 25px));
             justify-content: center;
             text-align: center;
         }
@@ -172,7 +172,6 @@
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-
         /* --- MODERN TITLES --- */
         .modern-title-wrapper {
             position: relative; text-align: center; margin-bottom: 70px; padding: 20px 0;
@@ -182,36 +181,22 @@
             position: relative; z-index: 2; background: var(--gradient-forest);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
         }
-        .title-watermark {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 6rem; font-weight: 900; color: rgba(167, 185, 154, 0.15); z-index: 1; line-height: 1;
-        }
 
-
-        /* --- SERVICES GRID (UPDATED) --- */
+        /* --- SERVICES GRID --- */
         .modern-features-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); 
-            gap: 40px; /* Increased gap */
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
         }
         .mf-item {
-            position: relative; 
-            display: flex; flex-direction: column;
-            cursor: pointer;
-            /* Removed absolute height to allow text flow */
+            position: relative; display: flex; flex-direction: column; cursor: pointer;
         }
         .mf-wide { grid-column: span 2; }
         .mf-tall { grid-row: span 2; }
         
         .mf-img-wrapper {
-            width: 100%; 
-            height: 250px; /* Fixed height for image area */
-            border-radius: 20px; 
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid var(--glass-border);
-            position: relative;
+            width: 100%; height: 250px; border-radius: 20px; overflow: hidden;
+            box-shadow: var(--shadow-soft); border: 1px solid var(--glass-border); position: relative;
         }
-        .mf-tall .mf-img-wrapper { height: 100%; min-height: 500px;} /* Taller image for tall item */
+        .mf-tall .mf-img-wrapper { height: 100%; min-height: 500px;}
 
         .mf-image {
             width: 100%; height: 100%; object-fit: cover;
@@ -219,9 +204,7 @@
         }
         
         .mf-text-content {
-            margin-top: 20px;
-            text-align: left;
-            padding: 0 10px;
+            margin-top: 20px; text-align: left; padding: 0 10px;
         }
         .mf-text-content h3 {
             font-size: 1.4rem; color: var(--deep-forest); margin-bottom: 8px; font-weight: 700;
@@ -234,35 +217,29 @@
         .mf-item:hover .mf-image { transform: scale(1.1); }
         .mf-item:hover .mf-text-content h3 { color: var(--sage-green); transition: 0.3s; }
 
-
-        /* --- APP SHOWCASE (UPDATED TRANSITIONS) --- */
+        /* --- APP SHOWCASE --- */
         #app-showcase {
             height: 350vh; padding: 1px; background: var(--white); position: relative;
         }
+        .mobile-app-text { display: none; } /* Hidden on desktop */
+
         .app-sticky-wrapper {
             position: sticky; top: 0; height: 100vh; width: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             overflow: hidden;
-            
         }
         .app-content-container {
             position: absolute; top: 25%; left: 10%;
             transform: translateY(-50%); text-align: left; z-index: 10; max-width: 400px;
             transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-            
-            
         }
         .app-showcase-title {
             text-align: left; margin-bottom: 20px; 
-        }
-        .app-showcase-title .title-watermark {
-            left: 0; transform: translate(-30%, -50%); 
         }
         .app-description {
             font-size: 1.1rem; color: #666; margin-top: 20px; opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
             line-height: 1.7;
         }
-        
         
         /* Phone Frame */
         .phone-frame {
@@ -271,7 +248,6 @@
             position: relative; z-index: 5; overflow: hidden;
             transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
             transform-origin: center center;
-            
         }
         .phone-frame::after {
             content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
@@ -292,27 +268,17 @@
         .app-screen-img:nth-child(6) { z-index: 6; }
 
         /* App Section States */
-        /* State 1: Rotated */
-
-        /* State 2: Exit & Center Text */
         .app-sticky-wrapper.state-exit .phone-frame {
-            transform: rotate(90deg) translateX(200vw); /* Move way off screen */
+            transform: rotate(90deg) translateX(200vw);
             opacity: 20;
         }
         .app-sticky-wrapper.state-exit .app-content-container {
-            left: 50%; 
-            top: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            max-width: 700px;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            text-align: center; max-width: 700px; padding: 0 20px;
         }
         .app-sticky-wrapper.state-exit .app-showcase-title {
             text-align: center;
         }
-        .app-sticky-wrapper.state-exit .app-showcase-title .title-watermark {
-            left: 50%; transform: translate(-50%, -50%);
-        }
-
 
         /* --- PROTOCOL SECTION --- */
         .protocol-timeline {
@@ -362,82 +328,47 @@
         .download-btn i { font-size: 1.8rem; }
         .download-btn:hover { transform: translateY(-5px); background-color: var(--sage-green); color: var(--deep-forest); box-shadow: 0 15px 30px rgba(30, 63, 47, 0.3); }
 
-        /* --- TEAM SECTION (UPDATED LAYOUT) --- */
+        /* --- TEAM SECTION --- */
         .team-grid { 
-            display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* 2 columns like the image */
-            gap: 30px; 
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; 
         }
         .team-member { 
-            background: var(--white); 
-            border: 1px solid #eee; 
-            border-radius: 12px; /* More rounded */
-            overflow: hidden; 
-            transition: 0.3s; 
-            display: flex; /* Horizontal Layout */
-            align-items: center;
-            padding: 20px; /* Padding inside card */
+            background: var(--white); border: 1px solid #eee; border-radius: 12px; overflow: hidden; 
+            transition: 0.3s; display: flex; align-items: center; padding: 20px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
         }
         .team-member:hover { 
-            box-shadow: 0 15px 30px rgba(30, 63, 47, 0.15); 
-            border-color: var(--sage-green); 
-            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(30, 63, 47, 0.15); border-color: var(--sage-green); transform: translateY(-5px);
         }
         .team-img-container { 
-            width: 100px; /* Fixed square size */
-            height: 100px; 
-            border-radius: 10px; /* Rounded image */
-            overflow: hidden; 
-            flex-shrink: 0; /* Prevent image from squishing */
-            margin-right: 25px; /* Spacing between image and text */
+            width: 100px; height: 100px; border-radius: 10px; overflow: hidden; 
+            flex-shrink: 0; margin-right: 25px; 
         }
         .team-member img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            filter: grayscale(100%); 
-            transition: 0.4s; 
+            width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.4s; 
         }
         .team-member:hover img { 
-            filter: grayscale(0%); 
-            transform: scale(1.1); 
+            filter: grayscale(0%); transform: scale(1.1); 
         }
         .member-info { 
-            padding: 0; 
-            border-top: none; 
-            background: transparent; 
-            flex-grow: 1;
+            padding: 0; border-top: none; background: transparent; flex-grow: 1;
         }
         .member-info h3 { 
-            font-size: 1.2rem; 
-            margin-bottom: 5px; 
-            color: var(--deep-forest); 
-            font-weight: 700; 
+            font-size: 1.2rem; margin-bottom: 5px; color: var(--deep-forest); font-weight: 700; 
         }
         .member-role { 
-            color: var(--sage-green); 
-            font-size: 0.85rem; 
-            text-transform: uppercase; 
-            font-weight: 600; 
-            letter-spacing: 1px; 
-            margin-bottom: 8px; 
-            display: block; 
+            color: var(--sage-green); font-size: 0.85rem; text-transform: uppercase; 
+            font-weight: 600; letter-spacing: 1px; margin-bottom: 8px; display: block; 
         }
         .member-social { 
-            display: flex; 
-            gap: 12px; 
-            opacity: 0.6; 
+            display: flex; gap: 12px; opacity: 0.6; 
         }
         .member-social a { 
-            font-size: 1.1rem; 
-            transition: 0.3s; 
+            font-size: 1.1rem; transition: 0.3s; 
         }
         .member-social a:hover { 
-            opacity: 1; 
-            color: var(--deep-forest); 
+            opacity: 1; color: var(--deep-forest); 
         }
-
 
         /* --- CONTACT SECTION --- */
         .contact-container { background: var(--white); border-radius: 12px; box-shadow: var(--shadow-soft); display: grid; grid-template-columns: 1fr 1.5fr; overflow: hidden; border: 1px solid #eee; }
@@ -484,18 +415,31 @@
             .footer-content { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 900px) {
-            .navbar { width: 95%; bottom: 20px; top: auto; flex-direction: row; justify-content: space-around;}
-            .logo-container { display: none; }
-            .nav-links { gap: 15px; font-size: 0.8rem; }
+            /* Navbar Responsive */
+            .navbar { top: 10px; width: 95%; flex-direction: row; justify-content: space-between; padding: 15px 25px;}
+            .logo-container { display: flex; } 
+            .hamburger { display: block; }
+            .nav-links {
+                position: absolute; top: 80px; left: 0; right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                border-radius: 15px; flex-direction: column; padding: 20px;
+                gap: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                transform: translateY(-20px); opacity: 0; visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+            .nav-links a { font-size: 1rem; display: block; width: 100%; }
+
             .hero-section-split { flex-direction: column; height: auto; }
             .hero-left-content { width: 100%; padding: 120px 25px 50px 25px; text-align: center; }
             .hero-content-wrapper { margin: 0 auto; }
             .hero-right-image { position: relative; width: 100%; height: 400px; top: 0; }
-            .hero-title { font-size: 3rem; }
+            .hero-title { font-size: 3rem; margin-bottom: 40px; }
             
             /* Reset grid to stack */
             .modern-features-grid { grid-template-columns: 1fr; }
             .mf-wide, .mf-tall { grid-column: span 1; grid-row: span 1; }
+            .mf-tall .mf-img-wrapper { min-height: 250px;}
             
             .protocol-timeline { flex-direction: column; align-items: center; }
             .protocol-line-bg, .protocol-line-fill { width: 4px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
@@ -506,15 +450,43 @@
             .contact-form { grid-template-columns: 1fr; }
             .contact-form textarea, .contact-form button { grid-column: span 1; }
             
-            /* Mobile adjustment for App Title */
-            .app-content-container {
-                top: 100px; left: 50%; transform: translateX(-50%); 
-                text-align: center; width: 100%;
+            /* App Title & Interface Split logic for small screens */
+            .mobile-app-text {
+                display: block;
+                position: relative;
+                top: auto; left: auto; transform: none; 
+                text-align: center; width: 100%; padding: 40px 20px 20px 20px;
+                margin: 0 auto;
+                z-index: 10;
             }
-            .app-showcase-title .title-watermark { left: 50%; transform: translate(-50%, -50%); }
+            .desktop-app-text {
+                display: none !important;
+            }
+            .app-sticky-wrapper {
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+            }
+            .phone-frame {
+                transform: scale(0.85);
+                transform-origin: center center;
+                margin: 0 auto;
+            }
+            .app-sticky-wrapper.state-exit .phone-frame {
+                transform: rotate(90deg) translateX(200vw) scale(0.85);
+            }
 
             /* Team Grid Mobile */
             .team-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .footer-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .footer-brand p { margin: 0 auto 20px auto; }
+            .footer-brand h2, .member-social { justify-content: center; }
+            .footer-bottom { flex-direction: column; gap: 15px; }
+            .footer-bottom-links a { margin: 0 10px; }
+            .contact-form-container { padding: 30px; }
+            .contact-info { padding: 30px; }
         }
     </style>
 </head>
@@ -525,6 +497,9 @@
             <div class="logo-container">
                 <div class="logo-img"><img src="images/logo.png" alt="Logo"></div>
                 <div class="logo">Enviora</div>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
             </div>
             <ul class="nav-links">
                 <li><a href="#product">Product</a></li>
@@ -554,7 +529,6 @@
         <section id="services">
             <div class="container reveal-up">
                 <div class="modern-title-wrapper">
-                    <div class="title-watermark">01</div>
                     <h2 class="section-title">Our Services</h2>
                 </div>
                 
@@ -623,10 +597,18 @@
         </section>
 
         <section id="app-showcase">
+            <div class="app-content-container mobile-app-text reveal-up">
+                <div class="modern-title-wrapper app-showcase-title">
+                    <h2 class="section-title">App Interface</h2>
+                </div>
+                <p class="app-description">
+                    Experience a seamless, user-centric interface designed for efficiency. Our app features intuitive navigation, real-time data visualization, and a dark-mode optimized layout to ensure you stay connected to your city's waste management grid with ease.
+                </p>
+            </div>
+
             <div class="app-sticky-wrapper" id="stickyWrapper">
-                <div class="app-content-container reveal-up">
+                <div class="app-content-container desktop-app-text reveal-up">
                     <div class="modern-title-wrapper app-showcase-title">
-                        <div class="title-watermark">APP</div>
                         <h2 class="section-title">App Interface</h2>
                     </div>
                     <p class="app-description">
@@ -650,7 +632,6 @@
         <section id="steps" class="steps-section">
             <div class="container reveal-up">
                 <div class="modern-title-wrapper">
-                    <div class="title-watermark">02</div>
                     <h2 class="section-title">Protocol</h2>
                 </div>
                 
@@ -697,7 +678,6 @@
         <section id="download" class="download-section-new">
             <div class="container reveal-up">
                 <div class="modern-title-wrapper">
-                    <div class="title-watermark">03</div>
                     <h2 class="section-title">Get The App</h2>
                 </div>
                 <p style="margin-bottom: 40px; font-size: 1.1rem; color: var(--charcoal); max-width: 600px; margin-left: auto; margin-right: auto;">
@@ -719,7 +699,6 @@
         <section id="team">
             <div class="container reveal-up">
                 <div class="modern-title-wrapper">
-                    <div class="title-watermark">04</div>
                     <h2 class="section-title">Development Team</h2>
                 </div>
                 <div class="team-grid stagger-parent">
@@ -833,9 +812,8 @@
                     <h2><i class="fas fa-leaf" style="color:var(--sage-green)"></i> Enviora</h2>
                     <p>Revolutionizing municipal waste management through advanced geospatial tracking and community engagement technologies.</p>
                     <div class="member-social" style="opacity: 1;">
-                        <a href="#" style="color:white; margin-right:15px; font-size:1.2rem"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" style="color:white; margin-right:15px; font-size:1.2rem"><i class="fab fa-twitter"></i></a>
-                        <a href="#" style="color:white; font-size:1.2rem"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.instagram.com/enviora.lk/" target="_blank" style="color:white; margin-right:15px; font-size:1.2rem"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/envioralk/" target="_blank" style="color:white; font-size:1.2rem"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 
@@ -880,6 +858,31 @@
     </footer>
 
     <script>
+        // --- MOBILE NAV MENU LOGIC ---
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            if(navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.querySelector('i').classList.remove('fa-times');
+                hamburger.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
         // --- NAVBAR & HERO SCROLL LOGIC ---
         const nav = document.getElementById('navbar');
         const heroSection = document.getElementById('product');
@@ -891,7 +894,7 @@
             if (scrollY > 50) nav.classList.add('scrolled');
             else nav.classList.remove('scrolled');
 
-            // Hero Section Transition (Move image right, Center content)
+            // Hero Section Transition
             if (scrollY > 100) {
                 heroSection.classList.add('centered-view');
             } else {
@@ -905,7 +908,6 @@
                 if(entry.isIntersecting) {
                     entry.target.classList.add('active');
                     
-                    // Trigger Protocol Timeline drawing
                     if(entry.target.id === 'steps') {
                         setTimeout(() => {
                             const line = entry.target.querySelector('.protocol-line-fill');
@@ -924,7 +926,7 @@
         revealElements.forEach(el => revealObserver.observe(el));
 
 
-        // --- APP SCROLL LOGIC (IMAGES -> ROTATE -> LEAVE -> CENTER) ---
+        // --- APP SCROLL LOGIC ---
         const showcaseSection = document.getElementById('app-showcase');
         const stickyWrapper = document.getElementById('stickyWrapper');
         const appImages = document.querySelectorAll('.app-screen-img');
@@ -935,15 +937,12 @@
             const rect = showcaseSection.getBoundingClientRect();
             const sectionHeight = showcaseSection.offsetHeight - window.innerHeight;
             
-            // Calculate progress (0 to 1)
             let progress = -rect.top / sectionHeight;
             progress = Math.max(0, Math.min(progress, 1));
             
-            // Phase 1: Image Scrolling (0% to 70% of scroll)
             const imageScrollLimit = 0.7;
             const totalImages = appImages.length;
             
-            // Map progress 0-0.7 to 0-1 for images
             let imageProgress = progress / imageScrollLimit;
             if (imageProgress > 1) imageProgress = 1;
 
@@ -957,18 +956,13 @@
                 }
             });
 
-            // Phase 2: Rotation (70% to 85%)
             if (progress > 0.7 && progress <= 0.85) {
                 stickyWrapper.classList.add('state-rotate');
                 stickyWrapper.classList.remove('state-exit');
-            } 
-            // Phase 3: Exit & Center Text (85% to 100%)
-            else if (progress > 0.85) {
-                stickyWrapper.classList.add('state-rotate'); // Ensure it stays rotated
+            } else if (progress > 0.85) {
+                stickyWrapper.classList.add('state-rotate'); 
                 stickyWrapper.classList.add('state-exit');
-            } 
-            // Reset (Back to start)
-            else {
+            } else {
                 stickyWrapper.classList.remove('state-rotate');
                 stickyWrapper.classList.remove('state-exit');
             }
